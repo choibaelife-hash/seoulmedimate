@@ -3,6 +3,14 @@ import { type NextRequest, NextResponse } from 'next/server'
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { locales, defaultLocale } from './locales'
 
+// app/icon.tsx, app/opengraph-image.tsx 같은 Next.js 메타데이터 라우트.
+// 확장자가 없어서 아래 pathname.includes('.') 조건에 안 걸리고,
+// 그대로 두면 intl 미들웨어가 /en/icon 으로 리다이렉트해 이미지가 깨진다.
+const METADATA_ROUTES = new Set([
+  '/icon', '/apple-icon', '/opengraph-image', '/twitter-image',
+  '/manifest.webmanifest', '/robots.txt', '/sitemap.xml',
+])
+
 
 const intlMiddleware = createMiddleware({
   locales,
@@ -32,6 +40,7 @@ export async function middleware(request: NextRequest) {
   if (
     pathname.startsWith('/api') ||
     pathname.startsWith('/_next') ||
+    METADATA_ROUTES.has(pathname) ||
     pathname.includes('.')
   ) {
     return NextResponse.next()
