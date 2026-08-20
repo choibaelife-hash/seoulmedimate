@@ -1,12 +1,12 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { Suspense, useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Building2, Loader2, ShieldX } from 'lucide-react'
 import Link from 'next/link'
 
-export default function HospitalLoginPage() {
+function HospitalLoginPageInner() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const supabase = createClient()
@@ -153,5 +153,14 @@ export default function HospitalLoginPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+// useSearchParams() 는 Suspense 경계 안에서만 프리렌더 가능
+export default function HospitalLoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <HospitalLoginPageInner />
+    </Suspense>
   )
 }

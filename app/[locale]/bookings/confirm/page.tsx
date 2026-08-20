@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { Suspense, useState, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient as createSupabaseClient } from '@/lib/supabase/client'
@@ -8,7 +8,7 @@ import { Calendar, Clock, User, CheckCircle } from 'lucide-react'
 
 const TIME_SLOTS = ['09:00', '10:00', '11:00', '13:00', '14:00', '15:00', '16:00']
 
-export default function ConfirmBookingPage({ params: { locale } }: { params: { locale: string } }) {
+function ConfirmBookingPageInner({ params: { locale } }: { params: { locale: string } }) {
   const t = useTranslations('booking')
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -187,5 +187,14 @@ export default function ConfirmBookingPage({ params: { locale } }: { params: { l
         </div>
       </div>
     </div>
+  )
+}
+
+// useSearchParams() 는 Suspense 경계 안에서만 프리렌더 가능
+export default function ConfirmBookingPage(props: { params: { locale: string } }) {
+  return (
+    <Suspense fallback={null}>
+      <ConfirmBookingPageInner {...props} />
+    </Suspense>
   )
 }

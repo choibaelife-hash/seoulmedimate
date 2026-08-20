@@ -1,6 +1,6 @@
 import createMiddleware from 'next-intl/middleware'
 import { type NextRequest, NextResponse } from 'next/server'
-import { createServerClient } from '@supabase/ssr'
+import { createServerClient, type CookieOptions } from '@supabase/ssr'
 
 const locales = ['en', 'de', 'fr', 'es', 'it', 'pl', 'pt'] as const
 const defaultLocale = 'en'
@@ -83,7 +83,7 @@ async function checkSupabaseAuth(
     {
       cookies: {
         getAll: () => request.cookies.getAll(),
-        setAll: (cookies) => {
+        setAll: (cookies: { name: string; value: string; options: CookieOptions }[]) => {
           cookies.forEach(({ name, value, options }) => {
             res.cookies.set(name, value, options)
           })

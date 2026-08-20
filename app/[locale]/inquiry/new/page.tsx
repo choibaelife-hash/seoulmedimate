@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { Suspense, useState, useRef } from 'react'
 import { useTranslations } from 'next-intl'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient as createSupabaseClient } from '@/lib/supabase/client'
@@ -8,7 +8,7 @@ import { Mic, Square, Play, RotateCcw, Send, MessageSquare, AlertCircle } from '
 
 const CONSULTATION_FEE = 29
 
-export default function NewInquiryPage({ params: { locale } }: { params: { locale: string } }) {
+function NewInquiryPageInner({ params: { locale } }: { params: { locale: string } }) {
   const t = useTranslations('inquiry')
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -218,5 +218,14 @@ export default function NewInquiryPage({ params: { locale } }: { params: { local
         </div>
       </div>
     </div>
+  )
+}
+
+// useSearchParams() 는 Suspense 경계 안에서만 프리렌더 가능
+export default function NewInquiryPage(props: { params: { locale: string } }) {
+  return (
+    <Suspense fallback={null}>
+      <NewInquiryPageInner {...props} />
+    </Suspense>
   )
 }
