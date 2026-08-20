@@ -4,7 +4,7 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr'
 
 // i18n.ts 의 locales 와 반드시 일치시킬 것 (ko 누락으로 /ko 가 404 났던 이력 있음)
 const locales = ['en', 'ko', 'de', 'fr', 'es', 'it', 'pl', 'pt'] as const
-const defaultLocale = 'ko'
+const defaultLocale = 'en'
 
 const intlMiddleware = createMiddleware({
   locales,

@@ -5,7 +5,8 @@ import { createClient as createSupabaseClient } from '@/lib/supabase/server'
 
 import Navbar from '@/components/nav/Navbar'
 
-const locales = ['en', 'de', 'fr', 'es', 'it', 'pl', 'pt']
+// i18n.ts / middleware.ts 의 locales 와 반드시 일치시킬 것
+const locales = ['en', 'ko', 'de', 'fr', 'es', 'it', 'pl', 'pt']
 
 export default async function LocaleLayout({
   children,
