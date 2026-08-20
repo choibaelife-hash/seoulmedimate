@@ -1,10 +1,8 @@
 import createMiddleware from 'next-intl/middleware'
 import { type NextRequest, NextResponse } from 'next/server'
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
+import { locales, defaultLocale } from './locales'
 
-// i18n.ts 의 locales 와 반드시 일치시킬 것 (ko 누락으로 /ko 가 404 났던 이력 있음)
-const locales = ['en', 'ko', 'de', 'fr', 'es', 'it', 'pl', 'pt'] as const
-const defaultLocale = 'en'
 
 const intlMiddleware = createMiddleware({
   locales,

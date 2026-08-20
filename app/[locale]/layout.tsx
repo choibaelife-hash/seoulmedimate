@@ -4,9 +4,8 @@ import { notFound } from 'next/navigation'
 import { createClient as createSupabaseClient } from '@/lib/supabase/server'
 
 import Navbar from '@/components/nav/Navbar'
+import { locales, type Locale } from '@/locales'
 
-// i18n.ts / middleware.ts 의 locales 와 반드시 일치시킬 것
-const locales = ['en', 'ko', 'de', 'fr', 'es', 'it', 'pl', 'pt']
 
 export default async function LocaleLayout({
   children,
@@ -15,7 +14,7 @@ export default async function LocaleLayout({
   children: React.ReactNode
   params: { locale: string }
 }) {
-  if (!locales.includes(locale)) notFound()
+  if (!locales.includes(locale as Locale)) notFound()
 
   const messages = await getMessages()
   const supabase = await createSupabaseClient()

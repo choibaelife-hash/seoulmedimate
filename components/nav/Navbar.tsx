@@ -6,19 +6,8 @@ import { useTranslations } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
 import { useState, useRef, useEffect } from 'react'
 import { Menu, X, ChevronDown } from 'lucide-react'
+import { locales, localeInfo, defaultLocale, type Locale } from '@/locales'
 
-const locales = ['en', 'ko', 'de', 'fr', 'es', 'it', 'pl', 'pt'] as const
-
-const localeInfo: Record<string, { name: string; flag: string }> = {
-  en: { name: 'English',    flag: '🇬🇧' },
-  ko: { name: '한국어',      flag: '🇰🇷' },
-  de: { name: 'Deutsch',    flag: '🇩🇪' },
-  fr: { name: 'Français',   flag: '🇫🇷' },
-  es: { name: 'Español',    flag: '🇪🇸' },
-  it: { name: 'Italiano',   flag: '🇮🇹' },
-  pl: { name: 'Polski',     flag: '🇵🇱' },
-  pt: { name: 'Português',  flag: '🇵🇹' },
-}
 
 interface NavbarProps {
   locale: string
@@ -57,7 +46,7 @@ export default function Navbar({ locale, user }: NavbarProps) {
     router.refresh()
   }
 
-  const current = localeInfo[locale] ?? localeInfo['en']
+  const current = localeInfo[locale as Locale] ?? localeInfo[defaultLocale]
 
   return (
     <nav className="sticky top-0 z-50 bg-white border-b border-brand-100 shadow-sm">
