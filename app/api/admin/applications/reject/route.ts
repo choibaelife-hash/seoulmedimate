@@ -1,0 +1,43 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { createClient } from '@supabase/supabase-js'
+import { cookies } from 'next/headers'
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+)
+
+export async function POST(request: NextRequest) {
+  // 어드민 인증 확인
+  const cookieStore = cookies()
+  const adminSession = cookieStore.get('admin_session')
+  if (!adminSession || adminSession.value !== 'authenticated') {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  const formData = await request.formData()
+  const id = formData.get('id') as string
+  const type = formData.get('type') as string // 'interpreter' | 'hospital'
+
+  if (!id || !type) {
+    return NextResponse.json({ error: 'Missing id or type' }, { status: 400 })
+  }
+
+  const table = type === 'interpreter' ? 'interpreter_applications' : 'hospital_applications'
+
+  const { error } = await supabase
+    .from(table)
+    .update({
+      status: 'rejected',
+      reviewed_at: new Date().toISOString(),
+    })
+    .eq('id', id)
+
+  if (error) {
+    console.error('Reject error:', error)
+    return NextResponse.json({ error: error.message }, { status: 500 })
+  }
+
+  const tab = type === 'interpreter' ? 'interpreter' : 'hospital'
+  return NextResponse.redirect(new URL(`/admin/applications?tab=${tab}`, request.url))
+}

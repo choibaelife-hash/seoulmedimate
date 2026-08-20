@@ -1,0 +1,45 @@
+{
+  "name": "medroute",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "supabase:types": "supabase gen types typescript --project-id $SUPABASE_PROJECT_ID > types/database.ts"
+  },
+  "dependencies": {
+    "next": "14.2.x",
+    "react": "^18",
+    "react-dom": "^18",
+    "next-intl": "^3.17.x",
+    "@supabase/supabase-js": "^2.45.x",
+    "@supabase/ssr": "^0.5.x",
+    "stripe": "^16.x",
+    "@stripe/stripe-js": "^4.x",
+    "stream-chat": "^8.x",
+    "stream-chat-react": "^11.x",
+    "openai": "^4.x",
+    "twilio": "^5.x",
+    "resend": "^3.x",
+    "next-sanity": "^9.x",
+    "@sanity/client": "^6.x",
+    "zod": "^3.x",
+    "clsx": "^2.x",
+    "tailwind-merge": "^2.x",
+    "lucide-react": "^0.400.x"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "tailwindcss": "^3.4.x",
+    "autoprefixer": "^10.x",
+    "postcss": "^8.x",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.x"
+  }
+}
