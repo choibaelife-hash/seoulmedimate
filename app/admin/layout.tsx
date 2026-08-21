@@ -53,6 +53,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     router.push('/admin/login')
   }
 
+  // 로그인 화면에는 관리자 UI(사이드바)를 노출하지 않는다.
+  // 훅은 모두 위에서 호출되므로 이 지점의 조기 반환은 훅 순서에 영향이 없다.
+  if (pathname === '/admin/login') return <>{children}</>
+
   return (
     <div className="flex min-h-screen bg-gray-950">
       <aside className="w-56 bg-gray-900 border-r border-gray-800 flex flex-col flex-shrink-0">

@@ -1,6 +1,15 @@
+'use client'
+
+import { usePathname } from 'next/navigation'
+
 // /admin 및 하위 경로의 서버 렌더링이 끝날 때까지 즉시 표시되는 스켈레톤.
 // 대시보드가 Supabase 쿼리를 기다리는 동안 흰 화면 대신 레이아웃 골격을 보여준다.
 export default function AdminLoading() {
+  const pathname = usePathname()
+
+  // 로그인 화면은 밝은 배경이라 다크 대시보드 골격이 깜빡이면 어색하다.
+  if (pathname === '/admin/login') return null
+
   return (
     <div className="p-8 animate-pulse">
       <div className="mb-8">
