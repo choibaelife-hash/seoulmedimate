@@ -337,7 +337,7 @@ export default function InterpreterSignupPage() {
     setGoogleLoading(true)
     await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${window.location.origin}/interpreter/onboarding` },
+      options: { redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent('/interpreter/onboarding')}` },
     })
   }
 

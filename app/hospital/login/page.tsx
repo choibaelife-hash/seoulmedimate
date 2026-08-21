@@ -71,7 +71,7 @@ function HospitalLoginPageInner() {
     setGoogleLoading(true)
     await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${window.location.origin}/hospital/login?check=1` },
+      options: { redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent('/hospital/login?check=1')}` },
     })
   }
 

@@ -35,7 +35,7 @@ export default function LoginPage({ params: { locale } }: { params: { locale: st
   const handleGoogle = async () => {
     await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${location.origin}/${locale}/dashboard` },
+      options: { redirectTo: `${location.origin}/auth/callback?next=${encodeURIComponent(`/${locale}/dashboard`)}` },
     })
   }
 

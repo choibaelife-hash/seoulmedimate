@@ -41,6 +41,9 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith('/api') ||
     pathname.startsWith('/_next') ||
     METADATA_ROUTES.has(pathname) ||
+    // OAuth 콜백. 로케일 접두사가 붙으면(/en/auth/callback) 라우트를 못 찾아
+    // code 교환이 통째로 실패한다.
+    pathname === '/auth/callback' ||
     pathname.includes('.')
   ) {
     return NextResponse.next()

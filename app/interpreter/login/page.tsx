@@ -72,7 +72,7 @@ function InterpreterLoginPageInner() {
     setGoogleLoading(true)
     await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${window.location.origin}/interpreter/login?check=1` },
+      options: { redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent('/interpreter/login?check=1')}` },
     })
   }
 
