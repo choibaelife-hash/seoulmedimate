@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
+import { ADMIN_COOKIE, verifyAdminSession } from '@/lib/admin-session'
 
 export async function GET(request: NextRequest) {
   // 어드민 인증 확인
   const cookieStore = cookies()
-  const adminSession = cookieStore.get('admin_session')
-  if (!adminSession || adminSession.value !== 'authenticated') {
+  if (!(await verifyAdminSession(cookieStore.get(ADMIN_COOKIE)?.value))) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

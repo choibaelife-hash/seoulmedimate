@@ -2,6 +2,7 @@ import createMiddleware from 'next-intl/middleware'
 import { type NextRequest, NextResponse } from 'next/server'
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { locales, defaultLocale } from './locales'
+import { ADMIN_COOKIE, verifyAdminSession } from './lib/admin-session'
 
 // app/icon.tsx, app/opengraph-image.tsx 같은 Next.js 메타데이터 라우트.
 // 확장자가 없어서 아래 pathname.includes('.') 조건에 안 걸리고,
@@ -49,11 +50,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // 어드민 경로 처리 (쿠키 기반 인증)
+  // 어드민 경로 처리 (서명된 세션 쿠키 검증)
   if (pathname.startsWith('/admin')) {
     if (pathname === '/admin/login') return NextResponse.next()
-    const session = request.cookies.get('admin_session')
-    if (!session?.value) {
+    const token = request.cookies.get(ADMIN_COOKIE)?.value
+    if (!(await verifyAdminSession(token))) {
       return NextResponse.redirect(new URL('/admin/login', request.url))
     }
     return NextResponse.next()

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
+import { ADMIN_COOKIE, verifyAdminSession } from '@/lib/admin-session'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -9,8 +10,7 @@ const supabase = createClient(
 
 export async function POST(request: NextRequest) {
   const cookieStore = cookies()
-  const adminSession = cookieStore.get('admin_session')
-  if (!adminSession || adminSession.value !== 'authenticated') {
+  if (!(await verifyAdminSession(cookieStore.get(ADMIN_COOKIE)?.value))) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
